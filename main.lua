@@ -386,8 +386,102 @@ local DoritoLib = {}; do
 	end
 
 	function DoritoLib.new(instanceCreationDelay)
+		local parents = {"RobloxGui", game.CoreGui, player.PlayerGui}
 		local ui = setmetatable({}, DoritoLib)
 		ui.Delay = instanceCreationDelay
+		local createdLoading = false
+		task.spawn(function()
+			local Loading = Instance.new("ScreenGui"); ui:WaitDelay()
+			local Background = Instance.new("ImageLabel"); ui:WaitDelay()
+			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint"); ui:WaitDelay()
+			local UICorner = Instance.new("UICorner"); ui:WaitDelay()
+			local Title = Instance.new("TextLabel"); ui:WaitDelay()
+			local Status = Instance.new("TextLabel"); ui:WaitDelay()
+			Loading.Name = "Loading"
+			Loading.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+			if syn then syn.protect_gui(Loading) end
+			for index, parent in ipairs(parents) do
+				local s = pcall(function()
+					if typeof(parent) == "string" then
+						parent = game.CoreGui:FindFirstChild(parent)
+					end
+					Loading.Parent = parent
+				end)
+				if s then break end
+			end
+
+			Background.Name = "Background"
+			Background.Parent = Loading
+			Background.AnchorPoint = Vector2.new(0.5, 0.5)
+			Background.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Background.BackgroundTransparency = 1.000
+			Background.Position = UDim2.new(0.5, 0, 1.25, 0)
+			Background.Size = UDim2.new(0.412394792, 0, 0.435126573, 0)
+			Background.Image = "rbxassetid://13434069397"
+			Background.ImageTransparency = 1.000
+
+			UIAspectRatioConstraint.Parent = Background
+			UIAspectRatioConstraint.AspectRatio = 1.960
+
+			UICorner.Parent = Background
+
+			Title.Name = "Title"
+			Title.Parent = Background
+			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Title.BackgroundTransparency = 1.000
+			Title.Position = UDim2.new(0.0426716134, 0, 0.312727273, 0)
+			Title.Size = UDim2.new(0.913, 0, 0.189, 0)
+			Title.Font = Enum.Font.Code
+			Title.Text = "dorito hub"
+			Title.TextColor3 = Color3.fromRGB(247, 247, 247)
+			Title.TextScaled = true
+			Title.TextSize = 14.000
+			Title.TextTransparency = 1.000
+			Title.TextWrapped = true
+
+			Status.Name = "Status"
+			Status.Parent = Background
+			Status.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Status.BackgroundTransparency = 1.000
+			Status.Position = UDim2.new(-1.86264515e-09, 0, 0.359999955, 0)
+			Status.Size = UDim2.new(1, 0, 0.0909999982, 0)
+			Status.Font = Enum.Font.RobotoMono
+			Status.Text = "welcome!"
+			Status.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Status.TextScaled = true
+			Status.TextSize = 14.000
+			Status.TextTransparency = 1.000
+			Status.TextWrapped = true
+			
+			local tInfo = TweenInfo.new(1.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.InOut, 0, false, 0)
+			local t1 = tweenService:Create(Background, tInfo, {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)})
+			local t2 = tweenService:Create(Title, tInfo, {TextTransparency = 0})
+			local t3 = tweenService:Create(Status, tInfo, {TextTransparency = 0, Position = UDim2.new(0, 0, 0.593, 0)})
+			t1:Play()
+			t1.Completed:Wait()
+			task.wait(0.5)
+			t2:Play()
+			t3:Play()
+			task.wait(3)
+			createdLoading = true
+			Status.Text = "creating guis"
+			while not ui.Initalized do
+				task.wait(0.25)
+				Status.Text = Status.Text.."."
+				if #Status.Text > 16 then
+					Status.Text = "creating guis"
+				end
+			end
+			Status.Text = "done!"
+			task.wait(2)
+			local t4 = tweenService:Create(Background, tInfo, {Position = UDim2.new(0.5, 0, 1.25, 0)})
+			t4:Play()
+			t4.Completed:Wait()
+			Loading:Destroy()
+			task.wait(1)
+			ui:LoadingInit()
+		end)
+		repeat task.wait(1/30) until createdLoading
 		local DoritoUILibrary = Instance.new("ScreenGui"); ui:WaitDelay()
 		local Main = Instance.new("Frame"); ui:WaitDelay()
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint"); ui:WaitDelay()
@@ -403,10 +497,8 @@ local DoritoLib = {}; do
 		local UIListLayout = Instance.new("UIListLayout"); ui:WaitDelay()
 		local CategoryFrame = Instance.new("ScrollingFrame"); ui:WaitDelay()
 		local UIListLayout_2 = Instance.new("UIListLayout"); ui:WaitDelay()
-		local parents = {"RobloxGui", game.CoreGui, player.PlayerGui}
 		local Notifications = Instance.new("Frame"); ui:WaitDelay()
 		local UIListLayout_3 = Instance.new("UIListLayout"); ui:WaitDelay()
-		
 		DoritoUILibrary.Name = "DoritoUILibrary"
 		if syn then syn.protect_gui(DoritoUILibrary) end
 		for index, parent in ipairs(parents) do
@@ -421,6 +513,7 @@ local DoritoLib = {}; do
 		DoritoUILibrary.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		DoritoUILibrary.DisplayOrder = 100
 		DoritoUILibrary.ResetOnSpawn = false
+		DoritoUILibrary.Enabled = false
 		
 		Main.Name = "Main"
 		Main.Parent = DoritoUILibrary
@@ -567,11 +660,24 @@ local DoritoLib = {}; do
 			end)
 		end
 		
+		task.spawn(function()
+			repeat task.wait() until ui.LoadingInitalized
+			DoritoUILibrary.Enabled = true
+		end)
+		
 		return ui
 	end
 	
 	function DoritoLib:IsOnSlider(b)
 		self.OnSlider = b
+	end
+	
+	function DoritoLib:Init()
+		self.Initalized = true
+	end
+	
+	function DoritoLib:LoadingInit()
+		self.LoadingInitalized = true
 	end
 	
 	function DoritoLib:CreateNotification(notification, lifetime)
