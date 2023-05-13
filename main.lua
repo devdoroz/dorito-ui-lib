@@ -47,6 +47,66 @@ local DoritoLib = {}; do
 			Button.MouseButton1Click:Connect(callback)
 		end
 		
+		function category:CreateTextInput(name, func)
+			local TextInput = Instance.new("Frame"); self.Parent:WaitDelay()
+			local Bar = Instance.new("Frame"); self.Parent:WaitDelay()
+			local Title = Instance.new("TextLabel"); self.Parent:WaitDelay()
+			local TextBox = Instance.new("TextBox"); self.Parent:WaitDelay()
+			local UICorner = Instance.new("UICorner"); self.Parent:WaitDelay()
+
+			TextInput.Name = "TextInput"
+			TextInput.BackgroundColor3 = Color3.fromRGB(36, 38, 39)
+			TextInput.BorderSizePixel = 0
+			TextInput.Size = UDim2.new(1, 0, 0.0656995103, 0)
+
+			Bar.Name = "Bar"
+			Bar.Parent = TextInput
+			Bar.BackgroundColor3 = Color3.fromRGB(117, 100, 222)
+			Bar.Position = UDim2.new(-6.78168419e-08, 0, 0, 0)
+			Bar.Size = UDim2.new(0.00711107347, 0, 0.999999881, 0)
+
+			Title.Name = "Title"
+			Title.Parent = TextInput
+			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Title.BackgroundTransparency = 1.000
+			Title.Position = UDim2.new(0.0355555192, 0, 0, 0)
+			Title.Size = UDim2.new(0.597660303, 0, 1.00000012, 0)
+			Title.Font = Enum.Font.RobotoMono
+			Title.Text = name
+			Title.TextColor3 = Color3.fromRGB(199, 202, 224)
+			Title.TextSize = 22.000
+			Title.TextWrapped = true
+			Title.TextXAlignment = Enum.TextXAlignment.Left
+
+			TextBox.Parent = TextInput
+			TextBox.AnchorPoint = Vector2.new(0, 0.5)
+			TextBox.BackgroundColor3 = Color3.fromRGB(57, 58, 62)
+			TextBox.BorderSizePixel = 0
+			TextBox.Position = UDim2.new(0.650690615, 0, 0.499999911, 0)
+			TextBox.Size = UDim2.new(0, 115, 0, 26)
+			TextBox.Font = Enum.Font.SourceSans
+			TextBox.Text = ""
+			TextBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+			TextBox.TextScaled = true
+			TextBox.TextSize = 14.000
+			TextBox.TextWrapped = true
+
+			UICorner.Parent = TextBox
+			
+			local data = {Input = ""}
+			
+			self.Children[#self.Children + 1] = TextInput
+			self.Data[name] = data			
+			
+			TextBox:GetPropertyChangedSignal("Text"):Connect(function()
+				data.Input = TextBox.Text
+			end)
+			
+			if func then
+				task.spawn(func, data)
+			end
+		end
+		
 		function category:CreateSwitch(name, list, func)
 			local Switch = Instance.new("Frame"); self.Parent:WaitDelay()
 			local Bar = Instance.new("Frame"); self.Parent:WaitDelay()
