@@ -9,9 +9,9 @@ local DoritoLib = {}; do
 	local category = {}; do
 		category.__index = category
 		function category:CreateButton(name, callback)
-			local Button = Instance.new("TextButton")
-			local Title = Instance.new("TextLabel")
-			local Bar = Instance.new("Frame")
+			local Button = Instance.new("TextButton"); self.Parent:WaitDelay()
+			local Title = Instance.new("TextLabel"); self.Parent:WaitDelay()
+			local Bar = Instance.new("Frame"); self.Parent:WaitDelay()
 
 			Button.Name = "Button"
 			Button.BackgroundColor3 = Color3.fromRGB(36, 38, 39)
@@ -48,11 +48,11 @@ local DoritoLib = {}; do
 		end
 		
 		function category:CreateSwitch(name, list, func)
-			local Switch = Instance.new("Frame")
-			local Bar = Instance.new("Frame")
-			local Title = Instance.new("TextLabel")
-			local SwitchButton = Instance.new("TextButton")
-			local UICorner = Instance.new("UICorner")
+			local Switch = Instance.new("Frame"); self.Parent:WaitDelay()
+			local Bar = Instance.new("Frame"); self.Parent:WaitDelay()
+			local Title = Instance.new("TextLabel"); self.Parent:WaitDelay()
+			local SwitchButton = Instance.new("TextButton"); self.Parent:WaitDelay()
+			local UICorner = Instance.new("UICorner"); self.Parent:WaitDelay()
 
 			Switch.Name = "Switch"
 			Switch.BackgroundColor3 = Color3.fromRGB(36, 38, 39)
@@ -114,14 +114,14 @@ local DoritoLib = {}; do
 		end
 		
 		function category:CreateSlider(name, min, max, func)
-			local Slider = Instance.new("Frame")
-			local Bar = Instance.new("Frame")
-			local Title = Instance.new("TextLabel")
-			local SliderBackground = Instance.new("Frame")
-			local UICorner = Instance.new("UICorner")
-			local Slider_2 = Instance.new("Frame")
-			local UICorner_2 = Instance.new("UICorner")
-			local Num = Instance.new("TextLabel")
+			local Slider = Instance.new("Frame"); self.Parent:WaitDelay()
+			local Bar = Instance.new("Frame"); self.Parent:WaitDelay()
+			local Title = Instance.new("TextLabel"); self.Parent:WaitDelay()
+			local SliderBackground = Instance.new("Frame"); self.Parent:WaitDelay()
+			local UICorner = Instance.new("UICorner"); self.Parent:WaitDelay()
+			local Slider_2 = Instance.new("Frame"); self.Parent:WaitDelay()
+			local UICorner_2 = Instance.new("UICorner"); self.Parent:WaitDelay()
+			local Num = Instance.new("TextLabel"); self.Parent:WaitDelay()
 
 			Slider.Name = "Slider"
 			Slider.BackgroundColor3 = Color3.fromRGB(36, 38, 39)
@@ -265,13 +265,13 @@ local DoritoLib = {}; do
 		end
 		
 		function category:CreateToggle(name, func)
-			local Toggle = Instance.new("Frame")
-			local Bar = Instance.new("Frame")
-			local Title = Instance.new("TextLabel")
-			local ToggleButton = Instance.new("TextButton")
-			local UICorner = Instance.new("UICorner")
-			local Circle = Instance.new("TextButton")
-			local UICorner_2 = Instance.new("UICorner")
+			local Toggle = Instance.new("Frame"); self.Parent:WaitDelay()
+			local Bar = Instance.new("Frame"); self.Parent:WaitDelay()
+			local Title = Instance.new("TextLabel"); self.Parent:WaitDelay()
+			local ToggleButton = Instance.new("TextButton"); self.Parent:WaitDelay()
+			local UICorner = Instance.new("UICorner"); self.Parent:WaitDelay()
+			local Circle = Instance.new("TextButton"); self.Parent:WaitDelay()
+			local UICorner_2 = Instance.new("UICorner"); self.Parent:WaitDelay()
 
 			Toggle.Name = "Toggle"
 			Toggle.BackgroundColor3 = Color3.fromRGB(36, 38, 39)
@@ -385,26 +385,27 @@ local DoritoLib = {}; do
 		end
 	end
 
-	function DoritoLib.new()
+	function DoritoLib.new(instanceCreationDelay)
 		local ui = setmetatable({}, DoritoLib)
-		local DoritoUILibrary = Instance.new("ScreenGui")
-		local Main = Instance.new("Frame")
-		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-		local UICorner = Instance.new("UICorner")
-		local Bar = Instance.new("Frame")
-		local UICorner_2 = Instance.new("UICorner")
-		local Bar_2 = Instance.new("Frame")
-		local UICorner_3 = Instance.new("UICorner")
-		local Logo = Instance.new("ImageLabel")
-		local Title = Instance.new("TextLabel")
-		local Depth = Instance.new("TextLabel")
-		local Categories = Instance.new("ScrollingFrame")
-		local UIListLayout = Instance.new("UIListLayout")
-		local CategoryFrame = Instance.new("ScrollingFrame")
-		local UIListLayout_2 = Instance.new("UIListLayout")
+		ui.Delay = instanceCreationDelay
+		local DoritoUILibrary = Instance.new("ScreenGui"); ui:WaitDelay()
+		local Main = Instance.new("Frame"); ui:WaitDelay()
+		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint"); ui:WaitDelay()
+		local UICorner = Instance.new("UICorner"); ui:WaitDelay()
+		local Bar = Instance.new("Frame"); ui:WaitDelay()
+		local UICorner_2 = Instance.new("UICorner"); ui:WaitDelay()
+		local Bar_2 = Instance.new("Frame"); ui:WaitDelay()
+		local UICorner_3 = Instance.new("UICorner"); ui:WaitDelay()
+		local Logo = Instance.new("ImageLabel"); ui:WaitDelay()
+		local Title = Instance.new("TextLabel"); ui:WaitDelay()
+		local Depth = Instance.new("TextLabel"); ui:WaitDelay()
+		local Categories = Instance.new("ScrollingFrame"); ui:WaitDelay()
+		local UIListLayout = Instance.new("UIListLayout"); ui:WaitDelay()
+		local CategoryFrame = Instance.new("ScrollingFrame"); ui:WaitDelay()
+		local UIListLayout_2 = Instance.new("UIListLayout"); ui:WaitDelay()
 		local parents = {"RobloxGui", game.CoreGui, player.PlayerGui}
-		local Notifications = Instance.new("Frame")
-		local UIListLayout_3 = Instance.new("UIListLayout")
+		local Notifications = Instance.new("Frame"); ui:WaitDelay()
+		local UIListLayout_3 = Instance.new("UIListLayout"); ui:WaitDelay()
 		
 		DoritoUILibrary.Name = "DoritoUILibrary"
 		if syn then syn.protect_gui(DoritoUILibrary) end
@@ -625,6 +626,12 @@ local DoritoLib = {}; do
 		NotificationText.TextWrapped = true
 		
 		debris:AddItem(Notification, lifetime)
+	end
+	
+	function DoritoLib:WaitDelay()
+		if self.Delay then
+			task.wait(self.Delay)
+		end
 	end
 	
 	function DoritoLib:CreateCategory(name)
