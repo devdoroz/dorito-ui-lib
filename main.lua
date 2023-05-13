@@ -363,6 +363,7 @@ local DoritoLib = {}; do
 			Circle.MouseButton1Click:Connect(onClick)
 			
 			self.Children[#self.Children + 1] = Toggle
+			self.Data[name] = data
 			
 			if func then
 				task.spawn(func, data)
@@ -556,6 +557,7 @@ local DoritoLib = {}; do
 	function DoritoLib:CreateCategory(name)
 		local category = setmetatable({}, category)
 		category.Name = name
+		category.Data = {}
 		category.Children = {}
 		category.Parent = self
 		category.Button = Instance.new("TextButton")
