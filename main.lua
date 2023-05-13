@@ -419,6 +419,7 @@ local DoritoLib = {}; do
 		end
 		DoritoUILibrary.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		DoritoUILibrary.DisplayOrder = 100
+		DoritoUILibrary.ResetOnSpawn = false
 		
 		Main.Name = "Main"
 		Main.Parent = DoritoUILibrary
