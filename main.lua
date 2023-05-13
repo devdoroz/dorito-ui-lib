@@ -173,7 +173,7 @@ local DoritoLib = {}; do
 			end
 		end
 		
-		function category:CreateSlider(name, min, max, func)
+		function category:CreateSlider(name, min, max, def, func)
 			local Slider = Instance.new("Frame"); self.Parent:WaitDelay()
 			local Bar = Instance.new("Frame"); self.Parent:WaitDelay()
 			local Title = Instance.new("TextLabel"); self.Parent:WaitDelay()
@@ -219,7 +219,7 @@ local DoritoLib = {}; do
 			Slider_2.Name = "Slider"
 			Slider_2.Parent = SliderBackground
 			Slider_2.BackgroundColor3 = Color3.fromRGB(62, 59, 96)
-			Slider_2.Size = UDim2.new(0, 0, 1, 0)
+			Slider_2.Size = UDim2.new((def or min) / max, 0, 1, 0)
 
 			UICorner_2.Parent = Slider_2
 
@@ -230,13 +230,13 @@ local DoritoLib = {}; do
 			Num.Position = UDim2.new(0.88499999, 0, 0, 0)
 			Num.Size = UDim2.new(0.0890000015, 0, 1, 0)
 			Num.Font = Enum.Font.SourceSans
-			Num.Text = min
+			Num.Text = def or min
 			Num.TextColor3 = Color3.fromRGB(65, 67, 68)
 			Num.TextScaled = true
 			Num.TextSize = 14.000
 			Num.TextWrapped = true
 			
-			local data = {Num = min}
+			local data = {Num = def or min}
 			local tInfo = TweenInfo.new(0.25, Enum.EasingStyle.Cubic, Enum.EasingDirection.InOut, 0, false, 0)
 			
 			local function onTween()
