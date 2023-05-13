@@ -2,6 +2,7 @@ local tweenService = game:GetService("TweenService")
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
 local userInputService = game:GetService("UserInputService")
+local debris = game:GetService("Debris")
 
 local DoritoLib = {}; do
 	DoritoLib.__index = DoritoLib 
@@ -96,6 +97,7 @@ local DoritoLib = {}; do
 			local data = {Switched = list[1], Index = 1}
 			
 			self.Children[#self.Children + 1] = Switch
+			self.Data[name] = data
 			
 			SwitchButton.MouseButton1Click:Connect(function()
 				data.Index += 1
@@ -139,7 +141,7 @@ local DoritoLib = {}; do
 			Title.Position = UDim2.new(0.0355555192, 0, 0, 0)
 			Title.Size = UDim2.new(0.405683219, 0, 1.00000012, 0)
 			Title.Font = Enum.Font.RobotoMono
-			Title.Text = "Mags Power"
+			Title.Text = name
 			Title.TextColor3 = Color3.fromRGB(72, 74, 75)
 			Title.TextSize = 22.000
 			Title.TextWrapped = true
@@ -157,7 +159,7 @@ local DoritoLib = {}; do
 			Slider_2.Name = "Slider"
 			Slider_2.Parent = SliderBackground
 			Slider_2.BackgroundColor3 = Color3.fromRGB(62, 59, 96)
-			Slider_2.Size = UDim2.new(0.157142863, 0, 1, 0)
+			Slider_2.Size = UDim2.new(0, 0, 1, 0)
 
 			UICorner_2.Parent = Slider_2
 
@@ -168,7 +170,7 @@ local DoritoLib = {}; do
 			Num.Position = UDim2.new(0.88499999, 0, 0, 0)
 			Num.Size = UDim2.new(0.0890000015, 0, 1, 0)
 			Num.Font = Enum.Font.SourceSans
-			Num.Text = "32"
+			Num.Text = min
 			Num.TextColor3 = Color3.fromRGB(65, 67, 68)
 			Num.TextScaled = true
 			Num.TextSize = 14.000
@@ -255,6 +257,7 @@ local DoritoLib = {}; do
 			end)
 			
 			self.Children[#self.Children + 1] = Slider
+			self.Data[name] = data
 			
 			if func then
 				task.spawn(func, data)
@@ -400,7 +403,9 @@ local DoritoLib = {}; do
 		local CategoryFrame = Instance.new("ScrollingFrame")
 		local UIListLayout_2 = Instance.new("UIListLayout")
 		local parents = {"RobloxGui", game.CoreGui, player.PlayerGui}
-
+		local Notifications = Instance.new("Frame")
+		local UIListLayout_3 = Instance.new("UIListLayout")
+		
 		DoritoUILibrary.Name = "DoritoUILibrary"
 		if syn then syn.protect_gui(DoritoUILibrary) end
 		for index, parent in ipairs(parents) do
@@ -413,12 +418,13 @@ local DoritoLib = {}; do
 			if s then break end
 		end
 		DoritoUILibrary.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
+		DoritoUILibrary.DisplayOrder = 100
+		
 		Main.Name = "Main"
 		Main.Parent = DoritoUILibrary
 		Main.AnchorPoint = Vector2.new(0.5, 0.5)
 		Main.BackgroundColor3 = Color3.fromRGB(31, 33, 35)
-		Main.Position = UDim2.new(0.626615703, 0, 0.778368711, 0)
+		Main.Position = UDim2.new(0.5, 0, 0.5, 0)
 		Main.Size = UDim2.new(0.45906657, 0, 0.381481469, 0)
 
 		UIAspectRatioConstraint.Parent = Main
@@ -499,6 +505,18 @@ local DoritoLib = {}; do
 		CategoryFrame.Position = UDim2.new(0.238333374, 0, 0.223301038, 0)
 		CategoryFrame.Size = UDim2.new(0.745490491, 0, 0.749025285, 0)
 		CategoryFrame.ScrollBarThickness = 0
+		
+		Notifications.Name = "Notifications"
+		Notifications.Parent = DoritoUILibrary
+		Notifications.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Notifications.BackgroundTransparency = 1.000
+		Notifications.Position = UDim2.new(0.761979401, 0, 0.0189873409, 0)
+		Notifications.Size = UDim2.new(0.23142308, 0, 0.962025344, 0)
+
+		UIListLayout_3.Parent = Notifications
+		UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
+		UIListLayout_3.VerticalAlignment = Enum.VerticalAlignment.Bottom
+		UIListLayout_3.Padding = UDim.new(0.00999999978, 0)
 
 		UIListLayout_2.Parent = CategoryFrame
 		UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
@@ -552,6 +570,60 @@ local DoritoLib = {}; do
 	
 	function DoritoLib:IsOnSlider(b)
 		self.OnSlider = b
+	end
+	
+	function DoritoLib:CreateNotification(notification, lifetime)
+		local Notification = Instance.new("Frame")
+		local UICorner = Instance.new("UICorner")
+		local Lightness = Instance.new("Frame")
+		local UICorner_2 = Instance.new("UICorner")
+		local Title = Instance.new("TextLabel")
+		local NotificationText = Instance.new("TextLabel")
+
+		Notification.Name = "Notification"
+		Notification.Parent = self.GUI.Notifications
+		Notification.BackgroundColor3 = Color3.fromRGB(31, 33, 35)
+		Notification.Position = UDim2.new(0, 0, 0.835670829, 0)
+		Notification.Size = UDim2.new(1, 0, 0.164329112, 0)
+
+		UICorner.CornerRadius = UDim.new(0, 7)
+		UICorner.Parent = Notification
+
+		Lightness.Name = "Lightness"
+		Lightness.Parent = Notification
+		Lightness.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Lightness.BackgroundTransparency = 0.940
+		Lightness.Size = UDim2.new(1, 0, 0.5, 0)
+
+		UICorner_2.Parent = Lightness
+
+		Title.Name = "Title"
+		Title.Parent = Lightness
+		Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Title.BackgroundTransparency = 1.000
+		Title.Position = UDim2.new(0, 0, 0.180158362, 0)
+		Title.Size = UDim2.new(1, 0, 0.619665742, 0)
+		Title.Font = Enum.Font.SourceSansBold
+		Title.Text = "Dorito Hub"
+		Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Title.TextScaled = true
+		Title.TextSize = 14.000
+		Title.TextWrapped = true
+
+		NotificationText.Name = "NotificationText"
+		NotificationText.Parent = Notification
+		NotificationText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		NotificationText.BackgroundTransparency = 1.000
+		NotificationText.Position = UDim2.new(0.0231427923, 0, 0.490431041, 0)
+		NotificationText.Size = UDim2.new(0.95040828, 0, 0.439947248, 0)
+		NotificationText.Font = Enum.Font.SourceSansBold
+		NotificationText.Text = notification
+		NotificationText.TextColor3 = Color3.fromRGB(255, 255, 255)
+		NotificationText.TextScaled = true
+		NotificationText.TextSize = 14.000
+		NotificationText.TextWrapped = true
+		
+		debris:AddItem(Notification, lifetime)
 	end
 	
 	function DoritoLib:CreateCategory(name)
