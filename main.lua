@@ -103,8 +103,10 @@ local DoritoLib = {}; do
 			end)
 			
 			if func then
-				repeat task.wait() until self.Parent.LoadingInitalized
-				task.spawn(func, data)
+				task.spawn(function()
+					repeat task.wait() until self.LoadingInitalized
+					task.spawn(func, data)
+				end)
 			end
 		end
 		
@@ -170,8 +172,10 @@ local DoritoLib = {}; do
 			end)
 			
 			if func then
-				repeat task.wait() until self.Parent.LoadingInitalized
-				task.spawn(func, data)
+				task.spawn(function()
+					repeat task.wait() until self.LoadingInitalized
+					task.spawn(func, data)
+				end)
 			end
 		end
 		
@@ -322,8 +326,10 @@ local DoritoLib = {}; do
 			self.Data[name] = data
 			
 			if func then
-				repeat task.wait() until self.Parent.LoadingInitalized
-				task.spawn(func, data)
+				task.spawn(function()
+					repeat task.wait() until self.LoadingInitalized
+					task.spawn(func, data)
+				end)
 			end
 		end
 		
@@ -432,8 +438,10 @@ local DoritoLib = {}; do
 			self.Data[name] = data
 			
 			if func then
-				repeat task.wait() until ui.LoadingInitalized
-				task.spawn(func, data)
+				task.spawn(function()
+					repeat task.wait() until self.LoadingInitalized
+					task.spawn(func, data)
+				end)
 			end
 		end
 
