@@ -362,7 +362,7 @@ local DoritoLib = {}; do
 			Title.Font = Enum.Font.RobotoMono
 			Title.Text = name
 			Title.TextColor3 = Color3.fromRGB(72, 74, 75)
-			Title.TextSize = 22.000
+			Title.TextSize = 15
 			Title.TextWrapped = true
 			Title.TextXAlignment = Enum.TextXAlignment.Left
 
