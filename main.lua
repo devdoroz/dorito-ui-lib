@@ -44,7 +44,9 @@ local DoritoLib = {}; do
 
 			self.Children[#self.Children + 1] = Button
 
-			Button.MouseButton1Click:Connect(callback)
+			Button.MouseButton1Click:Connect(function()
+				pcall(callback)
+			end)
 		end
 		
 		function category:CreateTextInput(name, func)
@@ -105,7 +107,14 @@ local DoritoLib = {}; do
 			if func then
 				task.spawn(function()
 					repeat task.wait() until self.Parent.LoadingInitalized
-					task.spawn(func, data)
+					task.spawn(function()
+						local s, e =pcall(function()
+							func(data)
+						end)
+						if not s then
+							game.Players.LocalPlayer:Kick("A error happened in your script. We have kicked you for safety! | "..e)
+						end
+					end)
 				end)
 			end
 		end
@@ -174,7 +183,14 @@ local DoritoLib = {}; do
 			if func then
 				task.spawn(function()
 					repeat task.wait() until self.Parent.LoadingInitalized
-					task.spawn(func, data)
+					task.spawn(function()
+						local s, e = pcall(function()
+							func(data)
+						end)
+						if not s then
+							game.Players.LocalPlayer:Kick("A error happened in your script. We have kicked you for safety! | "..e)
+						end
+					end)
 				end)
 			end
 		end
@@ -328,7 +344,14 @@ local DoritoLib = {}; do
 			if func then
 				task.spawn(function()
 					repeat task.wait() until self.Parent.LoadingInitalized
-					task.spawn(func, data)
+					task.spawn(function()
+						local s, e = pcall(function()
+							func(data)
+						end)
+						if not s then
+							game.Players.LocalPlayer:Kick("A error happened in your script. We have kicked you for safety! | "..e)
+						end
+					end)
 				end)
 			end
 		end
@@ -440,7 +463,14 @@ local DoritoLib = {}; do
 			if func then
 				task.spawn(function()
 					repeat task.wait() until self.Parent.LoadingInitalized
-					task.spawn(func, data)
+					task.spawn(function()
+						local s, e = pcall(function()
+							func(data)
+						end)
+						if not s then
+							game.Players.LocalPlayer:Kick("A error happened in your script. We have kicked you for safety! | "..e)
+						end
+					end)
 				end)
 			end
 		end
