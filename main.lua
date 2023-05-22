@@ -50,7 +50,8 @@ local DoritoLib = {}; do
 			self.Children[#self.Children + 1] = Button
 
 			Button.MouseButton1Click:Connect(function()
-				pcall(callback)
+				local s, e = pcall(callback)
+				warn(e)
 			end)
 		end
 		
