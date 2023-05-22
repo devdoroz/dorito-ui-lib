@@ -178,6 +178,7 @@ local DoritoLib = {}; do
 			self.Data[name] = data
 			
 			self.RefreshValue.Changed:Connect(function()
+				print('refreshed')
 				SwitchButton.Text = data.Switched
 			end)
 			
@@ -459,13 +460,16 @@ local DoritoLib = {}; do
 				[true] = onTween
 			}
 			
-			local function onClick()
-				data.Enabled = not data.Enabled
+			local function onClick(t)
+				if not t then
+					data.Enabled = not data.Enabled
+				end
 				tweenFunc[data.Enabled]()	
 			end
 			
 			self.RefreshValue.Changed:Connect(function()
-				onClick()
+				print('refreshed')
+				onClick(true)
 			end)
 			
 			ToggleButton.MouseButton1Click:Connect(onClick)
@@ -879,7 +883,14 @@ local DoritoLib = {}; do
 			local contentsTable = game:GetService("HttpService"):JSONDecode(contents)
 			print(contentsTable)
 			for name, data in pairs(contentsTable) do
-				self.Categories[name].Data = data
+				for setting, sdata in pairs(data) do
+					for key, value in pairs(sdata) do
+						print(self.Categories[name].Data[setting][key])
+						self.Categories[name].Data[setting][key] = value
+						print(self.Categories[name].Data[setting][key])
+						print(setting, key, value)
+					end
+				end 
 				self.Categories[name]:Refresh()
 			end
 		end
