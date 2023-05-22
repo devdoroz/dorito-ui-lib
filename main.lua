@@ -176,7 +176,7 @@ local DoritoLib = {}; do
 			self.Children[#self.Children + 1] = Switch
 			self.Data[name] = data
 			
-			self.RefreshValue.Value.Changed:Connect(function()
+			self.RefreshValue.Changed:Connect(function()
 				SwitchButton.Text = data.Switched
 			end)
 			
@@ -463,7 +463,7 @@ local DoritoLib = {}; do
 				tweenFunc[data.Enabled]()	
 			end
 			
-			self.RefreshValue.Value.Changed:Connect(function()
+			self.RefreshValue.Changed:Connect(function()
 				onClick()
 			end)
 			
