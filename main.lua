@@ -178,7 +178,10 @@ local DoritoLib = {}; do
 			self.Data[name] = data
 			
 			self.RefreshValue.Changed:Connect(function()
-				print('refreshed')
+				local nwData = game:GetService("HttpService"):JSONDecode(self.RefreshValue.Value)
+				data.Switched = nwData[name].Switched
+				data.Index = nwData[name].Index
+				print(data.Switched)
 				SwitchButton.Text = data.Switched
 			end)
 			
@@ -272,6 +275,12 @@ local DoritoLib = {}; do
 			local data = {Num = def or min}
 			local tInfo = TweenInfo.new(0.25, Enum.EasingStyle.Cubic, Enum.EasingDirection.InOut, 0, false, 0)
 			
+			local function forceUpdate()
+				local percentage = (data.Num - min) / (max - min)
+				Slider_2.Size = UDim2.new(percentage, 0, 1, 0)
+				Num.Text = math.round(data.Num * 10) / 10
+			end
+			
 			local function onTween()
 				local t1 = tweenService:Create(Bar, tInfo, {BackgroundColor3 = Color3.fromRGB(108, 97, 249)})
 				local t2 = tweenService:Create(Num, tInfo, {TextColor3 = Color3.fromRGB(199, 202, 224)})
@@ -316,6 +325,14 @@ local DoritoLib = {}; do
 			Slider_2.MouseLeave:Connect(leave)
 			SliderBackground.MouseEnter:Connect(enter)
 			SliderBackground.MouseLeave:Connect(leave)
+			
+			self.RefreshValue.Changed:Connect(function()
+				local nwData = game:GetService("HttpService"):JSONDecode(self.RefreshValue.Value)
+				data.Num = nwData[name].Num
+				forceUpdate()
+			end)
+			
+			forceUpdate()
 			
 			userInputService.InputBegan:Connect(function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -468,7 +485,8 @@ local DoritoLib = {}; do
 			end
 			
 			self.RefreshValue.Changed:Connect(function()
-				print('refreshed')
+				local nwData = game:GetService("HttpService"):JSONDecode(self.RefreshValue.Value)
+				data.Enabled = nwData[name].Enabled
 				onClick(true)
 			end)
 			
@@ -504,8 +522,8 @@ local DoritoLib = {}; do
 			end
 		end
 		
-		function category:Refresh()
-			self.RefreshValue.Value = not self.RefreshValue.Value
+		function category:Refresh(data)
+			self.RefreshValue.Value = data
 		end
 	end
 
@@ -876,22 +894,11 @@ local DoritoLib = {}; do
 	end
 	
 	function DoritoLib:Load(filename)
-		print(filename)
 		if isfile("DoritoLib/"..filename..".json") then
-			print('passed check')
 			local contents = readfile("DoritoLib/"..filename..".json")
 			local contentsTable = game:GetService("HttpService"):JSONDecode(contents)
-			print(contentsTable)
 			for name, data in pairs(contentsTable) do
-				for setting, sdata in pairs(data) do
-					for key, value in pairs(sdata) do
-						print(self.Categories[name].Data[setting][key])
-						self.Categories[name].Data[setting][key] = value
-						print(self.Categories[name].Data[setting][key])
-						print(setting, key, value)
-					end
-				end 
-				self.Categories[name]:Refresh()
+				self.Categories[name]:Refresh(game:GetService("HttpService"):JSONEncode(contentsTable[name]))
 			end
 		end
 	end
@@ -901,7 +908,7 @@ local DoritoLib = {}; do
 		category.Name = name
 		category.Data = {}
 		category.Children = {}
-		category.RefreshValue = Instance.new("BoolValue")
+		category.RefreshValue = Instance.new("StringValue")
 		category.Parent = self
 		category.Button = Instance.new("TextButton")
 		category.Button.Name = "CategoryButton"
