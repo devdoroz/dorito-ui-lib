@@ -864,6 +864,7 @@ local DoritoLib = {}; do
 	
 	function DoritoLib:Save(filename)
 		local data = game:GetService("HttpService"):JSONEncode(self.Categories)
+		print(data)
 		writefile("DoritoLib/"..filename..".json", data)
 	end
 	
@@ -871,6 +872,7 @@ local DoritoLib = {}; do
 		if isfile("DoritoLib/"..filename..".json") then
 			local contents = readfile("DoritoLib/"..filename..".json")
 			local contentsTable = game:GetService("HttpService"):JSONDecode(contents)
+			print(contentsTable)
 			for name, data in pairs(contentsTable) do
 				local categoryData = data.Data
 				self.Categories[name].Data = categoryData
@@ -916,7 +918,7 @@ local DoritoLib = {}; do
 			self.GUI.Main.Depth.Text = "Dorito > "..category.Name	
 		end)
 		
-		DoritoLib.Categories[name] = category
+		self.Categories[name] = category
 
 		return category
 	end
