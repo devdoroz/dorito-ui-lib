@@ -4,10 +4,15 @@ local mouse = player:GetMouse()
 local userInputService = game:GetService("UserInputService")
 local debris = game:GetService("Debris")
 
+if not isfolder("DoritoLib") then
+	makefolder("DoritoLib")
+end 
+
 local DoritoLib = {}; do
 	DoritoLib.__index = DoritoLib 
 	local category = {}; do
 		category.__index = category
+		
 		function category:CreateButton(name, callback)
 			local Button = Instance.new("TextButton"); self.Parent:WaitDelay()
 			local Title = Instance.new("TextLabel"); self.Parent:WaitDelay()
@@ -170,6 +175,10 @@ local DoritoLib = {}; do
 			
 			self.Children[#self.Children + 1] = Switch
 			self.Data[name] = data
+			
+			self.RefreshValue.Value.Changed:Connect(function()
+				SwitchButton.Text = data.Switched
+			end)
 			
 			SwitchButton.MouseButton1Click:Connect(function()
 				data.Index += 1
@@ -454,6 +463,10 @@ local DoritoLib = {}; do
 				tweenFunc[data.Enabled]()	
 			end
 			
+			self.RefreshValue.Value.Changed:Connect(function()
+				onClick()
+			end)
+			
 			ToggleButton.MouseButton1Click:Connect(onClick)
 			Circle.MouseButton1Click:Connect(onClick)
 			
@@ -485,12 +498,17 @@ local DoritoLib = {}; do
 				child.Parent = self.Parent.GUI.Main.CategoryFrame
 			end
 		end
+		
+		function category:Refresh()
+			self.RefreshValue.Value = not self.RefreshValue.Value
+		end
 	end
 
 	function DoritoLib.new(instanceCreationDelay)
 		local parents = {"RobloxGui", game.CoreGui, player.PlayerGui}
 		local ui = setmetatable({}, DoritoLib)
 		ui.Delay = instanceCreationDelay
+		ui.Categories = {}
 		local createdLoading = false
 		task.spawn(function()
 			local Loading = Instance.new("ScreenGui"); ui:WaitDelay()
@@ -767,6 +785,8 @@ local DoritoLib = {}; do
 			DoritoUILibrary.Enabled = true
 		end)
 		
+		
+		
 		return ui
 	end
 	
@@ -842,11 +862,29 @@ local DoritoLib = {}; do
 		end
 	end
 	
+	function DoritoLib:Save(filename)
+		local data = game:GetService("HttpService"):JSONEncode(self.Categories)
+		writefile("DoritoLib/"..filename..".json", data)
+	end
+	
+	function DoritoLib:Load(filename)
+		if isfile("DoritoLib/"..filename..".json") then
+			local contents = readfile("DoritoLib/"..filename..".json")
+			local contentsTable = game:GetService("HttpService"):JSONDecode(contents)
+			for name, data in pairs(contentsTable) do
+				local categoryData = data.Data
+				self.Categories[name].Data = categoryData
+				self.Categories[name]:Refresh()
+			end 
+		end
+	end
+	
 	function DoritoLib:CreateCategory(name)
 		local category = setmetatable({}, category)
 		category.Name = name
 		category.Data = {}
 		category.Children = {}
+		category.RefreshValue = Instance.new("BoolValue")
 		category.Parent = self
 		category.Button = Instance.new("TextButton")
 		category.Button.Name = "CategoryButton"
@@ -877,6 +915,8 @@ local DoritoLib = {}; do
 			self.LastSelected = category.Button
 			self.GUI.Main.Depth.Text = "Dorito > "..category.Name	
 		end)
+		
+		DoritoLib.Categories[name] = category
 
 		return category
 	end
