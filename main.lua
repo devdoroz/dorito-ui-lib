@@ -808,7 +808,11 @@ local DoritoLib = {}; do
 			DoritoUILibrary.Enabled = true
 		end)
 		
-		
+		userInputService.InputBegan:Connect(function(input)
+			if input.KeyCode == Enum.KeyCode.RightShift then
+				DoritoUILibrary.Enabled = not DoritoUILibrary.Enabled
+			end
+		end)
 		
 		return ui
 	end
